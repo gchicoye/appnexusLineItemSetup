@@ -10,7 +10,7 @@ class HbSetup
 
 	protected $granularity = "auto";
 
-	protected $versionName = "PREBIDV3";
+	protected $prefix = "PREBIDV3";
 
 	public function __call($m,$p)
 	{     
@@ -37,12 +37,12 @@ class HbSetup
 
 		$advertiser = (new \App\Manager\Advertiser)
 			->setAuthorization($this->authorization)
-			->setName($this->versionName)
+			->setName($this->prefix)
 			->setFromName();
 
 		$insertionOrder = (new \App\Manager\InsertionOrder)
 			->setAuthorization($this->authorization)
-			->setName($this->versionName)
+			->setName($this->prefix)
 			->setAdvertiserId($advertiser->getId())
 			->setFromName();
 
@@ -51,7 +51,7 @@ class HbSetup
 			$creative = (new \App\Manager\Creative)
 				->setAuthorization($this->authorization)
 				->setAdvertiserId($advertiser->getId())
-				->setName($this->versionName."_".$sizeArray[0]."x".$sizeArray[1])
+				->setName($this->prefix."_".$sizeArray[0]."x".$sizeArray[1])
 				->setSizeArray($sizeArray)
 				->setFromName();
 			array_push($creatives, $creative);
@@ -59,10 +59,9 @@ class HbSetup
 
 		$buckets = \App\Tools\Buckets::createBuckets($this->granularity);
 
-		$i = 0;
 		foreach ($buckets as $bucket) {
 
-			$name = $this->versionName."_".$bucket;
+			$name = $this->prefix."_".$bucket;
 			$profile = (new \App\Manager\Profile)
 				->setAuthorization($this->authorization)
 				->setBucket($bucket)
@@ -86,22 +85,6 @@ class HbSetup
 				->setLineItemId($lineItem->getId())
 				->setFromName();
 
-			$i++;
-			if($i == 5){
-				exit;
-			}
-
 		}
-		
-
-
-
-
-
-
-		
-
-
-
 	}
 }
