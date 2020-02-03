@@ -8,6 +8,7 @@ class Profile extends Manager
     protected $name;
     protected $bucket;
     protected $advertiserCode;
+    protected $format;
 
 
 	public function __call($m,$p)
@@ -58,10 +59,25 @@ class Profile extends Manager
                             "client_version" => "1.0"
                         ),
                         "exp" => array(
-                            "typ" => "in",
-                            "vtp" => "sta",
-                            "key" => "hb_pb",
-                            "vsa" => [$this->bucket]
+                            "typ" => "and",
+                            "sbe" => [
+                                array("exp" => 
+                                    array(
+                                        "typ" => "in",
+                                        "vtp" => "sta",
+                                        "key" => "hb_pb",
+                                        "vsa" => [$this->bucket]
+                                    )
+                                ),
+                                array("exp" => 
+                                    array(
+                                        "typ" => "in",
+                                        "vtp" => "sta",
+                                        "key" => "hb_format",
+                                        "vsa" => [$this->format]
+                                    )
+                                )
+                            ]
                         )
                     )
                 )
@@ -69,6 +85,8 @@ class Profile extends Manager
         );
         return $this->postData($data, $this->apiEndPoint."/profile?advertiser_code=".$this->advertiserCode);
     }
+
+    
 
     protected function hydrate($data)
     {

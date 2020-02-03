@@ -10,7 +10,9 @@ class HbSetup
 
 	protected $granularity = "auto";
 
-	protected $prefix = "PREBIDV3";
+	protected $prefix = "PREBID";
+	
+	protected $format = "banner";
 
 	public function __call($m,$p)
 	{     
@@ -67,6 +69,7 @@ class HbSetup
 				->setBucket($bucket)
 				->setName($name)
 				->setAdvertiserCode($advertiser->getCode())
+				->setFormat($this->format)
 				->setFromBucket();
 
 
