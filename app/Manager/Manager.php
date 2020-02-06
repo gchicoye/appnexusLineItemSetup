@@ -149,6 +149,7 @@ class Manager
 		echo $response."\n\n";
 		$response = json_decode($response);
 		if(isset($response->response->{$this->className})){
+
 			echo json_encode($response->response->{$this->className}, JSON_PRETTY_PRINT);
 			exit;
 			$this->hydrate($response->response->{$this->className});

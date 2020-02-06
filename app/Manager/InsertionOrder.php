@@ -38,7 +38,15 @@ class InsertionOrder extends Manager
                 "code" => $this->nameToCode()
             )
         );
-        return $this->putData($data, $this->apiEndPoint."/insertion-order?id?=".$this->id."advertiser_id=".$this->advertiserId);
+        return $this->putData($data, $this->apiEndPoint."/insertion-order?id=".$this->id."&advertiser_id=".$this->advertiserId);
+    }
+
+    protected function hydrate($data)
+    {
+        
+        $this->id = $data->id;
+        $this->name = $data->name;
+        return $this;
     }
 
 

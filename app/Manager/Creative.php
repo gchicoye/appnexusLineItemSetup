@@ -30,6 +30,10 @@ class Creative extends Manager
     			"advertiser_id" => $this->advertiserId,
     			"original_content" => $this->getOriginalContent(),
     			"content" => $this->getContent(),
+    			"original_content_secure" => $this->getOriginalContent(),
+    			"content_secure" => $this->getContent(),
+    			"allow_audit" => false,
+    			"allow_ssl_audit" => true,
     			"width" => $this->sizeArray[0],
     			"height" => $this->sizeArray[1],
     			"template" => array(
@@ -42,7 +46,6 @@ class Creative extends Manager
 
     public function updateFromName()
     {
-    	
     	$data = array(
     		"creative" => array(
     			"id" => $this->id,
@@ -51,6 +54,10 @@ class Creative extends Manager
     			"advertiser_id" => $this->advertiserId,
     			"original_content" => $this->getOriginalContent(),
     			"content" => $this->getContent(),
+    			"original_content_secure" => $this->getOriginalContent(),
+    			"content_secure" => $this->getContent(),
+    			"allow_audit" => false,
+    			"allow_ssl_audit" => true,
     			"width" => $this->sizeArray[0],
     			"height" => $this->sizeArray[1],
     			"template" => array(
@@ -72,41 +79,13 @@ class Creative extends Manager
 
 	protected function getOriginalContent()
 	{
-		$output = "";
-		$output .= "<script src = \"https://cdn.jsdelivr.net/npm/prebid-universal-creative@latest/dist/creative.js\"></script>\n";
-		$output .= "<script>\n";
-		$output .= "  var ucTagData = {};\n";
-		$output .= "  ucTagData.adServerDomain = window.location.host;\n";
-		$output .= "  ucTagData.pubUrl = \"\${REFERER_URL_ENC}\";\n";
-		$output .= "  ucTagData.adId = \"#{HB_ADID}\";\n";
-		$output .= "  ucTagData.cacheHost = \"\";\n";
-		$output .= "  ucTagData.cachePath = \"\";\n";
-		$output .= "  ucTagData.uuid = \"\";\n";
-		$output .= "  ucTagData.mediaType = \"#{HB_FORMAT}\";\n";
-		$output .= "  ucTagData.env = \"\";\n";
-		$output .= "  ucTagData.size = \"#{HB_SIZE}\";\n";
-		$output .= "  ucTagData.hbPb = \"#{HB_PB}\";\n";
-		$output .= "  try {\n";
-		$output .= "    ucTag.renderAd(document, ucTagData);\n";
-		$output .= "  } catch (e) {\n";
-		$output .= "    console.log(e);\n";
-		$output .= "  }\n";
-		$output .= "</script>\n";
-		
+		$output = "<script src = \\\"https://cdn.jsdelivr.net/npm/prebid-universal-creative@latest/dist/creative.js\\\"><\\/script>\\n<script>\\n  var ucTagData = {};\\n  ucTagData.adServerDomain = window.location.host;\\n  ucTagData.pubUrl = \\\"\${REFERER_URL_ENC}\\\";\\n  ucTagData.adId = \\\"#{HB_ADID}\\\";\\n  ucTagData.cacheHost = \\\"\\\";\\n  ucTagData.cachePath = \\\"\\\";\\n  ucTagData.uuid = \\\"\\\";\\n  ucTagData.mediaType = \\\"#{HB_FORMAT}\\\";\\n  ucTagData.env = \\\"\\\";\\n  ucTagData.size = \\\"#{HB_SIZE}\\\";\\n  ucTagData.hbPb = \\\"#{HB_PB}\\\";\\n  try {\\n    ucTag.renderAd(document, ucTagData);\\n  } catch (e) {\\n    console.log(e);\\n  }\\n<\\/script>";
 		return $output;
 	}
 
 	protected function getContent()
 	{
-		$output = "";
-		$script = $this->getOriginalContent();
-		$script = str_replace("\\", "\\\\", $script);
-		$script = str_replace("script", "scr\"+\"ipt", $script);
-		$script = str_replace("\n", "", $script);		
-		
-		$output = "document.write(\"";
-		$output .= $script;
-		$output .= "\")";
+		$output =  "document.write('<script src = \\\"https://cdn.jsdelivr.net/npm/prebid-universal-creative@latest/dist/creative.js\\\"><\\/script>\\n<script>\\n  var ucTagData = {};\\n  ucTagData.adServerDomain = window.location.host;\\n  ucTagData.pubUrl = \\\"\${REFERER_URL_ENC}\\\";\\n  ucTagData.adId = \\\"#{HB_ADID}\\\";\\n  ucTagData.cacheHost = \\\"\\\";\\n  ucTagData.cachePath = \\\"\\\";\\n  ucTagData.uuid = \\\"\\\";\\n  ucTagData.mediaType = \\\"#{HB_FORMAT}\\\";\\n  ucTagData.env = \\\"\\\";\\n  ucTagData.size = \\\"#{HB_SIZE}\\\";\\n  ucTagData.hbPb = \\\"#{HB_PB}\\\";\\n  try {\\n    ucTag.renderAd(document, ucTagData);\\n  } catch (e) {\\n    console.log(e);\\n  }\\n<\\/script>');";
 
 		return $output;
 	}

@@ -8,6 +8,7 @@ class Profile extends Manager
     protected $name;
     protected $bucket;
     protected $advertiserCode;
+    protected $advertiserId;
     protected $format;
 
 
@@ -32,12 +33,14 @@ class Profile extends Manager
     public function getFromBucket()
     {
         $code = $this->nameToCode();
-        $url = $this->apiEndPoint."/profile?code=".$code."&advertiser_code=".$this->advertiserCode;
-        echo "Get From Name\n".$url."\n";
+        $url = $this->apiEndPoint."/profile?code=".$code."&advertiser_id=".$this->advertiserId;
+        echo "Get From Bucket\n".$url."\n";
         curl_setopt($this->ch, CURLOPT_URL, $url);
         $response= curl_exec($this->ch);
         echo $response."\n\n";
         $response = json_decode($response);
+
+
         if(isset($response->response->{$this->className})){
             $this->hydrate($response->response->{$this->className});
             return $this;
@@ -83,7 +86,9 @@ class Profile extends Manager
                 )
             )
         );
-        return $this->postData($data, $this->apiEndPoint."/profile?advertiser_code=".$this->advertiserCode);
+        $url = $this->apiEndPoint."/profile?advertiser_id=".$this->advertiserId;
+        echo "Create From Bucket\n".$url."\n";
+        return $this->postData($data, $url);
     }
 
     

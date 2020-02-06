@@ -6,18 +6,10 @@ $authorization = (new \App\Connexion\Connexion)->setCredentials()
 			->renewToken()
 			->getAuthorization();
 
-/*
-$LineItem = (new App\Manager\LineItem)
-	->setAuthorization($authorization)
-	->setId(10653738)
-	->getFromId();
-//var_dump($creative);
-*/
 
-$profile = (new App\Manager\Profile)
-	->setAuthorization($authorization)
-	->setId(118269573)
-	->getFromId();
+$creative = (new App\Manager\Creative)
+    ->setAuthorization($authorization)
+    ->setId(206805168) //->setId(206358192) for test creative
+    ->getFromId();
+var_dump($creative);
 
-
-var_dump($profile);

@@ -10,7 +10,7 @@ class HbSetup
 
 	protected $granularity = "auto";
 
-	protected $prefix = "PREBID";
+	protected $prefix;
 	
 	protected $format = "banner";
 
@@ -47,7 +47,7 @@ class HbSetup
 			->setName($this->prefix)
 			->setAdvertiserId($advertiser->getId())
 			->setFromName();
-
+		
 		$creatives = []; 
 		foreach ($this->sizes as $sizeArray) {
 			$creative = (new \App\Manager\Creative)
@@ -59,6 +59,10 @@ class HbSetup
 			array_push($creatives, $creative);
 		}
 
+		
+
+		
+
 		$buckets = \App\Tools\Buckets::createBuckets($this->granularity);
 
 		foreach ($buckets as $bucket) {
@@ -69,15 +73,16 @@ class HbSetup
 				->setBucket($bucket)
 				->setName($name)
 				->setAdvertiserCode($advertiser->getCode())
+				->setAdvertiserId($advertiser->getId())
 				->setFormat($this->format)
 				->setFromBucket();
-
 
 			$lineItem = (new \App\Manager\LineItem)
 				->setAuthorization($this->authorization)
 				->setAdvertiserId($advertiser->getId())
 				->setCreatives($creatives)
 				->setProfileId($profile->getId())
+				->setInsertionOrderId($insertionOrder->getId())
 				->setName($name)
 				->setFromName();
 			
@@ -88,6 +93,28 @@ class HbSetup
 				->setLineItemId($lineItem->getId())
 				->setFromName();
 
+		}
+	}
+
+	public function setCreatives()
+	{
+		$user = (new \App\Manager\User)->setAuthorization($this->authorization)
+			->getUser();
+
+		$advertiser = (new \App\Manager\Advertiser)
+			->setAuthorization($this->authorization)
+			->setName($this->prefix)
+			->setFromName();
+
+		$creatives = []; 
+		foreach ($this->sizes as $sizeArray) {
+			$creative = (new \App\Manager\Creative)
+				->setAuthorization($this->authorization)
+				->setAdvertiserId($advertiser->getId())
+				->setName($this->prefix."_".$sizeArray[0]."x".$sizeArray[1])
+				->setSizeArray($sizeArray)
+				->setFromName();
+			array_push($creatives, $creative);
 		}
 	}
 }

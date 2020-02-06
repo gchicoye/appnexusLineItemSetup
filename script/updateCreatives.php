@@ -11,7 +11,5 @@ $params = array(
 
 $script = (new \App\Script\HbSetup)
 	->setSizes($params['sizes'])
-	->setGranularity($params['granularity'])
 	->setPrefix($params['prefix'])
-	->setFormat($params['format'])
-	->setHeaderBidding();
+	->setCreatives();

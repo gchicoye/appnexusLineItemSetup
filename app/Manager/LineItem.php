@@ -7,6 +7,7 @@ class LineItem extends Manager
 	protected $advertiserId;
     protected $profileId;
     protected $creatives;
+    protected $insertionOrderId;
 
     public function __call($m,$p)
 	{     
@@ -29,6 +30,9 @@ class LineItem extends Manager
                 "code" => $this->nameToCode(),
     			"advertiser_id" => $this->advertiserId,
                 "profile_id" => $this->profileId,
+                "insertion_orders" => [array(
+                    'id' => $this->insertionOrderId
+                )],
     			"revenue_type" => "cpm",
                 "manage_creative" => true,
                 "revenue_value" => $value,
@@ -49,6 +53,9 @@ class LineItem extends Manager
                 "code" => $this->nameToCode(),
                 "advertiser_id" => $this->advertiserId,
                 "profile_id" => $this->profileId,
+                "insertion_orders" => [array(
+                    'id' => $this->insertionOrderId
+                )],
                 "revenue_type" => "cpm",
                 "manage_creative" => true,
                 "revenue_value" => $value,
